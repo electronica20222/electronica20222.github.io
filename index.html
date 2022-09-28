@@ -42,8 +42,8 @@
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
         <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:sales@electronica.co.in">sales@electronica.co.in</a></i>
-        <i class="bi bi-phone d-flex align-items-center ms-4"><span>+91 93563-03540,   +91 96540-61470</span></i>
-		
+        <i class="bi bi-phone d-flex align-items-center ms-4"><span>+91 93563-03540, +91 96540-61470</span></i>
+		 
       </div>
 
       <div class="cta d-none d-md-flex align-items-center">
@@ -220,7 +220,7 @@ higher business goals.</p>
             <p data-aos="fade-up">We are one of the leading providers of sophisticated fire science technologies.</p>
 
             <div class="icon-box" data-aos="fade-up">
-              <div class="icon"><i class="bx bx-fingerprint"></i></div>
+              <div class="icon"><i class="bx bx-brain"></i></div>
               <h4 class="title"><a href="">Vast experience</a></h4>
               <p class="description">At ELECTRONICA FIRE and SAFETY, we have experience of Fire Systems
 for more than 12 years. Team Electronica set out on a determined
@@ -229,7 +229,7 @@ services to our customers</p>
             </div>
 
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
-              <div class="icon"><i class="bx bx-gift"></i></div>
+              <div class="icon"><i class="bx bx-happy-alt"></i></div>
               <h4 class="title"><a href="">Satisfied customer base</a></h4>
               <p class="description">Today our
 company is proud to have a happy and satisfied customer base of
@@ -238,7 +238,7 @@ names in the construction industry</p>
             </div>
 
             <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
-              <div class="icon"><i class="bx bx-atom"></i></div>
+              <div class="icon"><i class="bx bx-money-withdraw"></i></div>
               <h4 class="title"><a href="">Optimizing cost</a></h4>
               <p class="description">We also work on
 optimizing the system cost to serve the customer needs with best
@@ -588,12 +588,12 @@ competitive rates</p>
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
             <div class="member">
               <div class="member-img">
-                <img src="assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                <img src="assets/img/team/harsh.jpg" class="img-fluid" alt="">
                 <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href="https://twitter.com/HrshBbbr/" target="_blank" ><i class="bi bi-twitter"></i></a>
+                  <a href="https://www.facebook.com/hrshbbbr" target="_blank"><i class="bi bi-facebook"></i></a>
+                  <a href="http://instagram.com/harshbabbar25" target="_blank"><i class="bi bi-instagram"></i></a>
+                  <a href="http://linkedin.com/in/harshbabbar" target="_blank"><i class="bi bi-linkedin"></i></a>
                 </div>
               </div>
               <div class="member-info">
@@ -651,7 +651,7 @@ competitive rates</p>
 
         <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="300">
           <div class="col-xl-9 col-lg-12 mt-4">
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+            <form  action="forms/postMail.php" method="post" name="getInTouch" id="sendMail" class="php-email-form">
               <div class="row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -666,12 +666,12 @@ competitive rates</p>
               <div class="form-group mt-3">
                 <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
               </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
+              <div class="my-3 msg_div" style="display:none">
+                <div class="error-message">Message cannot be send.</div>
                 <div class="sent-message">Your message has been sent. Thank you!</div>
               </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
+			  <br>
+              <div class="text-center"><button type="submit" id="submit_btn">Send Message</button></div>
             </form>
           </div>
 
@@ -768,7 +768,8 @@ competitive rates</p>
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <!--<script src="assets/vendor/php-email-form/validate.js"></script>-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
@@ -776,3 +777,50 @@ competitive rates</p>
 </body>
 
 </html>
+<script>
+$("#sendMail").on("submit",function(e)
+{
+	e.preventDefault();
+	
+	var obj = $(this), action_name = obj.attr('name'); 
+	$("#submit_btn").attr("disabled", true);
+	$("#submit_btn").html("Please Wait...");
+	
+	$.ajax
+	({
+		type: "POST",
+		url: e.target.action,
+		data: obj.serialize()+"&tag="+action_name,
+		cache: false,
+		success: function (response) 
+		{
+			if(response.status == 0)
+			{
+				$(".msg_div").css("display","block");
+				$(".msg_div .error-message").html(response.message);
+				$(".msg_div .error-message").css("display","block");
+				$(".msg_div .sent-message").css("display","none");
+				$(".msg_div .sent-message").html("");
+
+				$("#submit_btn").html('Send Message');
+				$("#submit_btn").removeAttr('disabled');
+				return false;
+			}
+			else
+			{
+				$(".msg_div").css("display","block");
+				$(".msg_div .error-message").css("display","none");
+				$(".msg_div .sent-message").html(response.message);
+				$(".msg_div .sent-message").css("display","block");
+				$(".msg_div .error-message").html("");
+				$("#submit_btn").html('Send Successfully');
+				setTimeout(function()
+				{
+					location.reload(true);
+				}, 2000);
+			}
+		}
+	});
+	
+});
+</script>
